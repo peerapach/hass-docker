@@ -1,0 +1,37 @@
+version: '3'
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - /hass:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+
+  autossh:
+    ## image tags - https://hub.docker.com/r/peerapach/autossh-agent/tags
+    ## - latest = amd64 (intel)
+    ## - arm64  = linux/arm64 (rasberry pi 4)
+    ## - armv7  = linux/arm/v7 (odroid c1)
+    image: peerapach/autossh-agent:armv7
+    container_name: autossh-agent
+    environment:
+        - TERM=xterm
+        - SSH_REMOTE_USER=autossh-agent                 # ssh remote user
+        - SSH_REMOTE_HOST=54.15.190.xx                  # ssh server ip
+        - SSH_REMOTE_PORT=202                           # ssh server port
+        - SSH_TARGET_HOST=127.0.0.1                     # ssh tunnel to host
+        - SSH_TARGET_PORT=8123                          # ssh tunnel to port
+        - SSH_BIND_IP=127.0.0.1                         # listen ip on ssh server
+        - SSH_TUNNEL_PORT=18123                         # listen port on ssh server
+        - SSH_OPTIONS=-o StreamLocalBindUnlink=yes -o UseRoaming=no
+#        - SSH_KEY_FILE=/opt/id_rsa
+        - SSH_KNOWN_HOSTS_FILE=/dev/null
+        - SSH_STRICT_HOST_IP_CHECK=false
+    volumes:
+      - /opt/id.pem:/home/autossh/.ssh/id_rsa:ro
+    network_mode: host
+    restart: unless-stopped
