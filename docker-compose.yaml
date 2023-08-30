@@ -35,3 +35,43 @@ services:
       - /opt/id.pem:/home/autossh/.ssh/id_rsa:ro
     network_mode: host
     restart: unless-stopped
+
+  ## testing
+  hassio_supervisor:
+    image: "ghcr.io/home-assistant/hassio-supervisor"
+    container_name: hassio_supervisor
+    security_opt:
+      - apparmor: "hassio-supervisor"
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /hass:/data:rw,slave
+      - /etc/localtime:/etc/localtime:ro
+      - /run/systemd-journal-gatewayd.sock:/run/systemd-journal-gatewayd.sock:rw
+      - /run/dbus:/run/dbus:ro
+      - /run/supervisor:/run/os:rw
+      - /run/udev:/run/udev:ro
+      - /etc/machine-id:/etc/machine-id:ro
+    environment:
+      - SUPERVISOR_SHARE=/hass
+      - SUPERVISOR_NAME=hassio_supervisor 
+      - SUPERVISOR_MACHINE=raspberrypi3
+      # generic-x86-64
+      # odroid-c2
+      # odroid-c4
+      # odroid-n2
+      # odroid-xu
+      # qemuarm
+      # qemuarm-64
+      # qemux86
+      # qemux86-64
+      # raspberrypi
+      # raspberrypi2
+      # raspberrypi3
+      # raspberrypi4
+      # raspberrypi3-64
+      # raspberrypi4-64
+      # tinker
+      # khadas-vim3
+    network_mode: host
+    restart: unless-stopped
