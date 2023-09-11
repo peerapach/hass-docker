@@ -39,6 +39,9 @@ services:
 
   ## testing
   hassio_supervisor:
+    # ghcr.io/home-assistant/armv7-hassio-supervisor
+    # ghcr.io/home-assistant/amd64-hassio-supervisor
+    # ghcr.io/home-assistant/aarch64-hassio-supervisor
     image: "ghcr.io/home-assistant/hassio-supervisor"
     container_name: hassio_supervisor
     security_opt:
