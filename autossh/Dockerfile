@@ -1,6 +1,4 @@
-ARG BASE_IMAGE
-
-FROM ${BASE_IMAGE}
+FROM alpine:3.18
 
 ENV \
 	USER=autossh \
