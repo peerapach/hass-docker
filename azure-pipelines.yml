@@ -32,5 +32,4 @@ stages:
   displayName: Deploy app
   jobs:
     - deployment: "app"
-      
-        
+      environment: dev
