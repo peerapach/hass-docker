@@ -28,3 +28,9 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/autossh/Dockerfile'
         tags: |
           $(tag)
+- stage: Deploy
+  displayName: Deploy app
+  jobs:
+    - deployment: "app"
+      
+        
